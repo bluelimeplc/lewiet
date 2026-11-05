@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Invoice>
+  <Plant_Code>RANK FAMILY PLC</Plant_Code>
+  <Plant_Name>_</Plant_Name>
+  <Username>Mrs Misiker NA NA</Username>
+  <Invoice_Type>CASH</Invoice_Type>
+  <Reference_Number>RECN-006951</Reference_Number>
+  <Invoice_Date>2024-05-22T07:14:31.256611+00:00</Invoice_Date>
+  <Customer_Code>e90fb43e-89a2-4772-83f8-3868e0214b29</Customer_Code>
+  <Customer_Name>Mr Abdulfeta  Mohammed Guled</Customer_Name>
+  <Customer_TIN>
+  </Customer_TIN>
+  <Payment_Type>Cash</Payment_Type>
+  <Invoice_DiscOrAdd_Amount>0</Invoice_DiscOrAdd_Amount>
+  <Line_Items>
+    <Item_ID>col</Item_ID>
+    <Item_Description>Dermatology Consultation</Item_Description>
+    <Item_Quantity>1</Item_Quantity>
+    <Item_UOM>no unit</Item_UOM>
+    <Item_Unit_Price>750</Item_Unit_Price>
+    <Item_Tax_Percent>0</Item_Tax_Percent>
+    <Item_DiscOrAdd_Amount>0</Item_DiscOrAdd_Amount>
+    <Store>
+    </Store>
+    <Line_Item_Type>Common Service</Line_Item_Type>
+  </Line_Items>
+</Invoice>

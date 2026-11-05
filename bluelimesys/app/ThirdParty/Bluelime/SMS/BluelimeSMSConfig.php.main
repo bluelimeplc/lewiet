@@ -1,0 +1,22 @@
+<?php
+
+namespace App\ThirdParty\Bluelime\SMS;
+
+class BluelimeSMSDriver {
+    public const RELAY_01 = 'RELAY_01';
+}
+
+class BluelimeSMSConfig {
+
+    public const BLUELIME_SMS_DRIVER = 'Jasmin'; //'RELAY_01';
+    public const BLUELIME_SMS_RELAY_URL = 'http://rank.dev2/api/sms/relay_send_sms?api_key=c268eb4de9202fb2e7eef8cc7924ec4c_20230907';
+
+
+    public const BLUELIME_SMS_FROM = 6797; //$_SERVER["BLUELIME_SMS_FROM"];
+    public const BLUELIME_SMS_GATEWAY_SECURE = 'http://192.168.1.20:8080';
+    public const BLUELIME_SMS_DLR_URL = 'http://bluelimesms.local/sms/receive_dlr';
+    public const BLUELIME_SMS_VALIDITY_PERIOD = 15;
+    public const BLUELIME_SMS_USERNAME = 'u_rank6797';
+    public const BLUELIME_SMS_PASSWORD = 'p_rank6797';
+    public const BLUELIME_SMS_BATCH_SEND_FOR = 100;
+}

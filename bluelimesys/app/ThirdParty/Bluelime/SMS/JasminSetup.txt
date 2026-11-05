@@ -1,0 +1,45 @@
+Jasmin SMS Gateway setup
+
+telnet 127.0.0.1 8990 using jcliadmin/jclipwd
+
+#Adding SMPP connection
+smppccm -a
+
+cid RANK_6797
+host 10.204.181.70
+port 5019
+username 6797
+password Rank@#67
+submit_throughput 110
+ok
+
+#Starting the connector
+smppccm -1 RANK_6797
+
+smppccm --list
+
+#Configure simple route
+mtrouter -a
+
+type defaultroute
+connector smppc(RANK_6797)
+rate 0.00
+ok
+
+#Create a user
+group -a
+gid g_rank6797
+ok
+
+user -a
+
+username u_rank6797
+password p_rank6797
+gid g_rank6797
+uid u_rank6797
+ok
+
+exit
+
+#Start api
+sudo systemctl start jasmin-restapi

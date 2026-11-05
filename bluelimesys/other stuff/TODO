@@ -1,0 +1,7 @@
+[ ] Add Expiry date on transaction
+    [x] Add expiry date in transaction table
+    [x] On sales
+        [x] get all available batch sort them with expiry
+        [x] create a sales transaction from the list considering batch quantity
+        
+[x] Enable Items in dispensary when Issue is made

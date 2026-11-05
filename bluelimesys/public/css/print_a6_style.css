@@ -1,0 +1,58 @@
+.print-page-a6-portrait {
+    width: 129mm;
+    background-color: #fff;
+    padding: 10px;
+    overflow: hidden;
+}
+
+.print-header-company-name{
+    text-align: center;
+    font-size: 13px;
+    font-weight: bold;
+    background-color: #eee;
+}
+.print-header-document-title{
+    text-align: center;
+    font-size: 12px;
+    font-weight: bold;
+    height: 30px;
+    padding: 0px;
+}
+.print-header-lable {
+    text-align: left;
+    width: 700px;
+    float: left;
+    font-size: 10px;
+    font-weight: normal;
+    margin-top: -3px;
+    margin-left: 0px;
+    margin-right: -120px;
+}
+.print-header-address span{
+    margin-left: 10px;
+    display: inline-block;
+    font-size: 10px;
+}
+.print-signature .signature{
+    height: 30px;
+}
+.print-signature .signee{
+    text-align: center;
+    font-weight: bold;
+    border-top: solid 1px;
+}
+.print-footer{
+    width: 129mm;
+    text-align: center;
+    font-size: 10px;
+    color: #aaa;
+    margin-top: -50px;
+}
+.attachment_table {
+    border-collapse: collapse;
+    border: 0px solid black;
+}
+
+.attachment_table td {
+    border: 2px solid black;
+}
