@@ -363,7 +363,7 @@
                                         else
                                         $btn = "Register";
                                         ?>
-                                        <button type="submit" class="btn btn-success"><?php echo $btn ?></button>
+                                        <button type="submit" class="btn btn-success style="float: right;"><?php echo $btn ?></button>
                                         <!--button type="button" onclick="showwaitscreen()" class="btn btn-warning" style="float: right;">Save & Wait</button-->                                        
                                     </div>
                                 
