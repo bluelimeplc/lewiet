@@ -79,11 +79,11 @@ use phpseclib3\Math\BigInteger\Engines\PHP;
         <i class="ti-receipt"></i> Credit Receipts
     </a>
 </li-->
-<li class="treeview sales_summary_report">
+<!--li class="treeview sales_summary_report">
     <a href="/hospital/reception/clinic_bill_groupedby_service_name/">
         <i class="ti-home"></i> Sales Summary Report
     </a>
-</li>
+</li-->
 <li class="treeview patientqueue">
         <a href="/hospital/reception/patientqueue/">
             <i class="ti-list"></i> Patient Queue
