@@ -274,7 +274,7 @@
                         </div>
                         <?php endif ?>
 
-                        <?php if(BLULIME_DEFAULT_APP=="HOSPITAL"): ?>
+                        <?php if(BLULIME_DEFAULT_APP=="HOSPITALx"): ?>
                         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-3 <?=($logged_role==='CASHIER')?"bg-green":"" ?>">
                             <div class="panel panel-bd">
                             <a href="<?php echo base_url();?>cashier/">

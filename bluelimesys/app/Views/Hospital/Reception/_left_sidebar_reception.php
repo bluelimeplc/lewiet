@@ -20,13 +20,13 @@ use phpseclib3\Math\BigInteger\Engines\PHP;
         <i class="fa fa-search" aria-hidden="true"></i><span>Search Patient</span>
     </a>
 </li>
-<li class="treeview patientwaitinglist">
+<!--li class="treeview patientwaitinglist">
     <a href="/hospital/reception/waitinglist">
         <i class="fa fa-list" aria-hidden="true"></i>
         <span>Patient Waiting List</span>
         <span class="patientwaitinglist-count"></span>
     </a>
-</li> 
+</li--> 
 
 
 <li class="treeview pending_bills">
@@ -59,11 +59,11 @@ use phpseclib3\Math\BigInteger\Engines\PHP;
         <i class="ti-receipt"></i><span>Recieved Payments</span>
     </a>
 </li-->
-<li class="treeview biopsy_followup">
+<!--li class="treeview biopsy_followup">
     <a href="/hospital/reception/biopsyorders">
         <i class="ti-agenda"></i><span>Biopsy & Pathology <span class="countbiopsy"></span></span>
     </a>
-</li>
+</li-->
 <li class="treeview list">
     <a href="/cashier/">
         <i class="ti ti-money" aria-hidden="true"></i><span>Cashier</span>
@@ -74,11 +74,11 @@ use phpseclib3\Math\BigInteger\Engines\PHP;
         <i class="ti-home"></i> Cashier Dashboard
     </a>
 </li>
-<li class="treeview credit_receipts">
+<!--li class="treeview credit_receipts">
     <a href="/hospital/reception/credit_receipts/">
         <i class="ti-receipt"></i> Credit Receipts
     </a>
-</li>
+</li-->
 <li class="treeview sales_summary_report">
     <a href="/hospital/reception/clinic_bill_groupedby_service_name/">
         <i class="ti-home"></i> Sales Summary Report
