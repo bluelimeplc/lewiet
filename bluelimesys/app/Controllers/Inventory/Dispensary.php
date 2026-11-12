@@ -20,7 +20,7 @@ class Dispensary extends \App\Controllers\BaseController
         $loggeduserdata = BluelimeSystem::$Authentication::get_logged_user_data();
         $logged_user = $loggeduserdata['id'];
         //$default_store_id = $loggeduserdata['extra']['default_store'] ?? -1;
-        $default_store_id = 2;
+        $default_store_id = 1;
         $number_of_sales = BluelimeSystem::count_my_unsent_inventory_sales();
         $number_of_op = $onlinePrescriptionModel->where('status',0)->where('branch_to',$_ENV['BRANCH'])->findColumn('count(id)')[0];
         //BluelimeSystem::show_and_die($number_of_op);
