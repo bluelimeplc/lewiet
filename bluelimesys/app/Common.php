@@ -2330,7 +2330,12 @@ class BluelimePOS {
         $pOSBillModel = model('POS/POSBillModel');
         $payment_method = $is_credit ? 'Credit' : 'Cash';
 
-        $pos_bill_data = [ 'type' => $type, 'payment_method' => $payment_method, 'sales_id_list' => BluelimeSystem::convert_array_to_string($sales_id_list)];
+        $pos_bill_data = [
+            'type' => $type,
+            'payment_method' => $payment_method,
+            'sales_id_list' => BluelimeSystem::convert_array_to_string($sales_id_list),
+            'pos_bill_json' => BluelimeSystem::convert_array_to_string(['sales_item_list' => []]),
+        ];
         $pos_bill_id = $pOSBillModel->insert($pos_bill_data);
 
         if((trim($customer_name) == '') || (strtolower(trim($customer_name)) == 'walk in')){
