@@ -5,11 +5,11 @@
         <i class="ti-home"></i> <span><?php echo "Dashboard"?><span class="cancelledappointments"></span></span>
     </a>
 </li>
-<li class="treeview pendingstorerequest">
+<!--li class="treeview pendingstorerequest">
     <a href="/inventory/store/">
         <i class="fa fa-shopping-cart" aria-hidden="true"></i><span>Pending Store Requests<span class="countbills"></span> </span>
     </a>
-</li>
+</li-->
 
 
 <li class="treeview grv_form">
@@ -45,11 +45,11 @@
         <i class="fa fa-plus" aria-hidden="true"></i><span>Inventory</span>
     </a>
 </li>
-<li class="treeview purchase_form">
+<!--li class="treeview purchase_form">
     <a href="/inventory/store/purchase_form">
         <i class="fa fa-shopping-cart" aria-hidden="true"></i><span>Purchase Request</span>
     </a>
-</li>
+</li-->
 <li class="treeview inventory_count">
     <a href="/hospital/admin/setupdata">
         <i class="fa fa-shopping-cart" aria-hidden="true"></i><span>Inventory Count</span>

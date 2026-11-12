@@ -20,16 +20,6 @@
             <div class="header-title">
                 <h1><a href="/cashier"><?= $cashier_type ?> Cashier</a></h1>
                 <small>POS</small>
-                <ol class="breadcrumb">
-                    <?php
-                        if($logged_user['role'] == 'SUPER_ADMIN'){
-                    ?>
-                            <li class="active"><a href="?i=2"><?php echo "Hospital";?></a></li>
-                            <li class="active"><a href="?i=1"><?php echo "Inventory";?></a></li>
-                    <?php
-                            }
-                    ?>
-                </ol>
             </div>
         </section>
 
@@ -105,7 +95,7 @@
                                     echo '
                                 <tr class="payment_row">
                                     <td class="'.($locked?' bg-gray ' : '').'">'.++$sn.'</td>
-                                    <td>'.$customer_name.'<br><small>'.($row['pos_bill_json']['invoice_no']??'').'</small></td>
+                                    <td>'.$customer_name.'<br><small>'.($row['pos_bill_json']['invoice_no']??'').'</small>'.($show_type ? '<br><span class="label label-default">'.$row['type'].'</span>' : '').'</td>
                                     <td>
                                         <a class="print btn btn-info" href="/cashier/attachment?pos_bill_id='.$row['id'].'" target="_blank"><span class="fa fa-print"></span></a>
                                         

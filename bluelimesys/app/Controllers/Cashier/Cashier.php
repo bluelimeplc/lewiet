@@ -13,19 +13,8 @@ class Cashier extends \App\Controllers\BaseController
     {
         $logged_user = BluelimeAuthentication::get_logged_user_data();
 
-        if($logged_user['role'] == 'SUPER_ADMIN'){
-            $i = $_GET['i'] ?? 0;
-            if($i==1)
-                $_SESSION['show_inventory'] = true;
-            elseif($i==2)
-                $_SESSION['show_inventory'] = false;
-
-            $inventory = $_SESSION['show_inventory'] ?? false;
-            if($inventory)
-                return $this->inventory_sales();
-            else
-                return $this->hospital_sales();
-        }
+        if($logged_user['role'] == 'SUPER_ADMIN')
+            return $this->sales_list_page(['Hospital', 'Inventory'], 'Clinic & Pharmacy', true);
         elseif($logged_user['role'] == BluelimeConfiguration::USER_ROLE::CASHIER_INVENTORY)
             return $this->inventory_sales();
         else
@@ -33,37 +22,21 @@ class Cashier extends \App\Controllers\BaseController
     }
 
     public function hospital_sales(): string{
-        $search_key = $_GET['search_key'] ?? '';
-
-        $posBillModel = model('POS/POSBillModel');
-        if(trim($search_key) != '')
-            $posBillModel = $posBillModel->groupStart()->where('CAST(JSON_UNQUOTE(JSON_EXTRACT(pos_bill_json, "$.customer_name")) as CHAR) like', "%$search_key%")->orwhere('CAST(JSON_UNQUOTE(JSON_EXTRACT(pos_bill_json, "$.customer_code")) as CHAR) like', "%$search_key%")->orwhere('fs_number LIKE', "%$search_key%")->orwhere('total LIKE', "%$search_key%")->orwhere('id LIKE', "%$search_key%")->orwhere('response_date LIKE', "%$search_key%")->orwhere('payment_method LIKE', "%$search_key%")->groupEnd();
-
-        $pos_bills = $posBillModel->where('type', 'Hospital')->orderBy('id', 'DESC')->paginate(BluelimeConfiguration::NUMBER_OF_ROW_OF_LIST);
-        foreach($pos_bills as $index => $pos_bill){
-            $pos_bills[$index]['total'] = $this->calculate_total($pos_bill);
-        }
-
-        $data = [
-            'pos_bills' => $pos_bills,
-            'search_key' => $search_key,
-            'pager'=>$posBillModel->pager,
-            'active_menu'=>'list',
-            'cashier_type' => 'Clinic'
-        ];
-
-        //return 'hospital_sales';
-        return view('Cashier/sales_list', $data);
+        return $this->sales_list_page(['Hospital'], 'Clinic');
     }
 
     public function inventory_sales(): string{
+        return $this->sales_list_page(['Inventory'], 'Pharmacy');
+    }
+
+    private function sales_list_page(array $types, string $cashier_type, bool $show_type = false): string{
         $search_key = $_GET['search_key'] ?? '';
 
         $posBillModel = model('POS/POSBillModel');
         if(trim($search_key) != '')
             $posBillModel = $posBillModel->groupStart()->where('CAST(JSON_UNQUOTE(JSON_EXTRACT(pos_bill_json, "$.customer_name")) as CHAR) like', "%$search_key%")->orwhere('CAST(JSON_UNQUOTE(JSON_EXTRACT(pos_bill_json, "$.customer_code")) as CHAR) like', "%$search_key%")->orwhere('fs_number LIKE', "%$search_key%")->orwhere('total LIKE', "%$search_key%")->orwhere('id LIKE', "%$search_key%")->orwhere('response_date LIKE', "%$search_key%")->orwhere('payment_method LIKE', "%$search_key%")->groupEnd();
 
-        $pos_bills = $posBillModel->where('type', 'Inventory')->orderBy('id', 'DESC')->paginate(BluelimeConfiguration::NUMBER_OF_ROW_OF_LIST);
+        $pos_bills = $posBillModel->whereIn('type', $types)->orderBy('id', 'DESC')->paginate(BluelimeConfiguration::NUMBER_OF_ROW_OF_LIST);
         foreach($pos_bills as $index => $pos_bill){
             $pos_bills[$index]['total'] = $this->calculate_total($pos_bill);
         }
@@ -73,9 +46,10 @@ class Cashier extends \App\Controllers\BaseController
             'search_key' => $search_key,
             'pager'=>$posBillModel->pager,
             'active_menu'=>'list',
-            'cashier_type' => 'Pharmacy'
+            'cashier_type' => $cashier_type,
+            'show_type' => $show_type
         ];
-        
+
         return view('Cashier/sales_list', $data);
     }
 

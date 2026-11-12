@@ -161,7 +161,7 @@
                             </div>
                         </div>
                         <?php endif ?>
-                        <?php if(BLULIME_DEFAULT_APP=="HOSPITALx"): ?>
+                        <?php if(BLULIME_DEFAULT_APP=="HOSPITAL"): ?>
                         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-3 <?=($logged_role==='STORE')?"bg-green":"" ?>">
                             <div class="panel panel-bd">
                             <a href="<?php echo base_url();?>inventory/store">
@@ -217,7 +217,7 @@
                             </div>
                         </div>
                         <?php endif ?>
-                        <?php if(BLULIME_DEFAULT_APP=="HOSPITALx"): ?>
+                        <?php if(BLULIME_DEFAULT_APP=="HOSPITAL"): ?>
                         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-3 <?=($logged_role==='DISPENSARY')?"bg-green":"" ?>">
                             <div class="panel panel-bd">
                             <a href="<?php echo base_url();?>inventory/dispensary">
@@ -358,6 +358,8 @@
                             </a>    
                             </div>
                         </div>
+                        <?php endif ?>
+                        <?php if(BLULIME_DEFAULT_APP=="HOSPITAL"): ?>
                         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-3 <?=($logged_role==='MIS')?"bg-green":"" ?>">
                             <div class="panel panel-bd">
                             <a href="<?php echo base_url();?>hospital/MIS/">
