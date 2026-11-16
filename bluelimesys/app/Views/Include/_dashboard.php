@@ -20,13 +20,18 @@
                 </section>
                 <?php
                 $loggeduserdata = \BluelimeSystem::$Authentication::get_logged_user_data();
-                $logged_role = $loggeduserdata['role'];                
+                $logged_role = $loggeduserdata['role'];
+                $logged_roles = $loggeduserdata['roles'] ?? [$logged_role];
+                $logged_roles = is_array($logged_roles) ? $logged_roles : [$logged_role];
+                $has_role = static function (array $roles) use ($logged_roles): bool {
+                    return count(array_intersect($roles, $logged_roles)) > 0 || in_array('SUPER_ADMIN', $logged_roles, true) || in_array('ADMIN', $logged_roles, true);
+                };                
                 ?>
                 
                 <!-- Main content -->
                 <section class="content">
                     <div class="row">
-                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-3 <?=($logged_role==='RECEPTION')?"bg-green":"" ?>">
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-3 <?= $has_role(['RECEPTION']) ? '' : 'hidden' ?> <?=($logged_role==='RECEPTION')?"bg-green":"" ?>">
                             <div class="panel panel-bd">
                             <a href="<?php echo base_url();?>hospital/reception">
                                 <div class="panel-body">
@@ -53,7 +58,7 @@
                             </div>
                         </div>
 
-                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-3 <?=($logged_role==='NURSE')?"bg-green":"" ?>">
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-3 <?= $has_role(['NURSE']) ? '' : 'hidden' ?> <?=($logged_role==='NURSE')?"bg-green":"" ?>">
                             <div class="panel panel-bd">
                             <a href="<?php echo base_url();?>hospital/nurse">
                                 <div class="panel-body">
@@ -80,7 +85,7 @@
                             </div>
                         </div>
 
-                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-3 <?=($logged_role==='ADMIN')?"bg-green":"" ?>">
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-3 <?= $has_role(['ADMIN']) ? '' : 'hidden' ?> <?=($logged_role==='ADMIN')?"bg-green":"" ?>">
                             <div class="panel panel-bd">
                             <a href="<?php echo base_url();?>hospital/admin">
                                 <div class="panel-body">
@@ -107,7 +112,7 @@
                             </div>
                         </div>
 
-                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-3 <?=($logged_role==='DOCTOR')?"bg-green":"" ?>">
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-3 <?= $has_role(['DOCTOR']) ? '' : 'hidden' ?> <?=($logged_role==='DOCTOR')?"bg-green":"" ?>">
                             <div class="panel panel-bd">
                             <a href="<?php echo base_url();?>hospital/doctor">
                                 <div class="panel-body">
@@ -134,7 +139,7 @@
                             </div>
                         </div>
                         <?php if(BLULIME_DEFAULT_APP=="HOSPITAL"): ?>
-                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-3 <?=($logged_role==='')?"bg-green":"" ?>">
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-3 <?= $has_role(['LABORATORY']) ? '' : 'hidden' ?> <?=($logged_role==='LABORATORY')?"bg-green":"" ?>">
                             <div class="panel panel-bd">
                             <a href="<?php echo base_url();?><?=strtolower(BLULIME_DEFAULT_APP)?>/laboratory">
                                 <div class="panel-body">
@@ -162,7 +167,7 @@
                         </div>
                         <?php endif ?>
                         <?php if(BLULIME_DEFAULT_APP=="HOSPITAL"): ?>
-                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-3 <?=($logged_role==='STORE')?"bg-green":"" ?>">
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-3 <?= $has_role(['STORE']) ? '' : 'hidden' ?> <?=($logged_role==='STORE')?"bg-green":"" ?>">
                             <div class="panel panel-bd">
                             <a href="<?php echo base_url();?>inventory/store">
                                 <div class="panel-body">
@@ -190,7 +195,7 @@
                         </div>
                         <?php endif ?>
                         <?php if(BLULIME_DEFAULT_APP=="HOSPITALx"): ?>
-                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-3 <?=($logged_role==='FINANCE')?"bg-green":"" ?>">
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-3 <?= $has_role(['FINANCE']) ? '' : 'hidden' ?> <?=($logged_role==='FINANCE')?"bg-green":"" ?>">
                             <div class="panel panel-bd">
                             <a href="<?php echo base_url();?>inventory/finance">
                                 <div class="panel-body">
@@ -218,7 +223,7 @@
                         </div>
                         <?php endif ?>
                         <?php if(BLULIME_DEFAULT_APP=="HOSPITAL"): ?>
-                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-3 <?=($logged_role==='DISPENSARY')?"bg-green":"" ?>">
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-3 <?= $has_role(['DISPENSARY']) ? '' : 'hidden' ?> <?=($logged_role==='DISPENSARY')?"bg-green":"" ?>">
                             <div class="panel panel-bd">
                             <a href="<?php echo base_url();?>inventory/dispensary">
                                 <div class="panel-body">
@@ -246,7 +251,7 @@
                         </div>
                         <?php endif ?>
                         <?php if(BLULIME_DEFAULT_APP=="HOSPITALx"): ?>
-                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-3 <?=($logged_role==='COMPOUNDING')?"bg-green":"" ?>">
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-3 <?= $has_role(['COMPOUNDING']) ? '' : 'hidden' ?> <?=($logged_role==='COMPOUNDING')?"bg-green":"" ?>">
                             <div class="panel panel-bd">
                             <a href="<?php echo base_url();?>inventory/compounding/list">
                                 <div class="panel-body">
@@ -275,7 +280,7 @@
                         <?php endif ?>
 
                         <?php if(BLULIME_DEFAULT_APP=="HOSPITALx"): ?>
-                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-3 <?=($logged_role==='CASHIER')?"bg-green":"" ?>">
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-3 <?= $has_role(['CASHIER_INVENTORY', 'CASHIER_HOSPITAL']) ? '' : 'hidden' ?> <?=($logged_role==='CASHIER')?"bg-green":"" ?>">
                             <div class="panel panel-bd">
                             <a href="<?php echo base_url();?>cashier/">
                                 <div class="panel-body">
@@ -304,7 +309,7 @@
                         <?php endif ?>
                         
                         <?php if(BLULIME_DEFAULT_APP=="HOSPITALx"): ?>
-                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-3 <?=($logged_role==='CALL_CENTER')?"bg-green":"" ?>">
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-3 <?= $has_role(['CALL_CENTER']) ? '' : 'hidden' ?> <?=($logged_role==='CALL_CENTER')?"bg-green":"" ?>">
                             <div class="panel panel-bd">
                             <a href="<?php echo base_url();?>hospital/callcenter/">
                                 <div class="panel-body">
@@ -332,7 +337,7 @@
                         </div>
                         <?php endif ?>
                         <?php if(BLULIME_DEFAULT_APP=="HOSPITALx"): ?>
-                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-3 <?=($logged_role==='PATHOLOGY')?"bg-green":"" ?>">
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-3 <?= $has_role(['PATHOLOGY']) ? '' : 'hidden' ?> <?=($logged_role==='PATHOLOGY')?"bg-green":"" ?>">
                             <div class="panel panel-bd">
                             <a href="<?php echo base_url();?>hospital/pathology/">
                                 <div class="panel-body">
@@ -360,7 +365,7 @@
                         </div>
                         <?php endif ?>
                         <?php if(BLULIME_DEFAULT_APP=="HOSPITAL"): ?>
-                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-3 <?=($logged_role==='MIS')?"bg-green":"" ?>">
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-3 <?= $has_role(['MIS']) ? '' : 'hidden' ?> <?=($logged_role==='MIS')?"bg-green":"" ?>">
                             <div class="panel panel-bd">
                             <a href="<?php echo base_url();?>hospital/MIS/">
                                 <div class="panel-body">

@@ -21,7 +21,8 @@ class Admin extends \App\Controllers\BaseController
         //\BluelimeSystem::show_and_die($user);
         $userLoginfo = $userLoginfoModel->orderBy('id DESC')->findAll(50);
         foreach($userLoginfo as $index => $user){
-            $userLoginfo[$index]['name']= $userModel->where('id',$user['user_id'])->findColumn('name')[0];
+            $userName = $userModel->where('id', $user['user_id'] ?? 0)->findColumn('name')[0] ?? 'Unknown User';
+            $userLoginfo[$index]['name'] = $userName;
         }
 
         $stores = $storeModel->findAll();
@@ -279,7 +280,11 @@ class Admin extends \App\Controllers\BaseController
         $name         = $_POST['full_name'];
         $password    = $_POST['password']??"0000";
         $active      = 1;
-        $role        = $_POST['role'];
+        $roles       = array_values(array_unique(array_filter(array_map('strtoupper', (array) ($_POST['roles'] ?? [])))));
+        $role        = $roles[0] ?? strtoupper(trim((string) ($_POST['role'] ?? '')));
+        if ($role !== '' && !in_array($role, $roles, true)) {
+            array_unshift($roles, $role);
+        }
         $default_store        = $_POST['default_store'] ?? '';
         $extra_role  = $_POST['extra_role'] ?? [];
         $email       = $_POST['email'];
@@ -294,7 +299,7 @@ class Admin extends \App\Controllers\BaseController
             'password'           => md5($password),
             'active'            => $active,
             'role'              => $role,
-            'extra'              => BluelimeSystem::convert_array_to_string(['extra_role' => $extra_role, 'default_store' => $default_store]),
+            'extra'              => BluelimeSystem::convert_array_to_string(['roles' => $roles, 'extra_role' => $extra_role, 'default_store' => $default_store]),
             'email'                  => $email,
             'mobile'              => $mobile,
             'pin_code'            => md5($pin_code),
@@ -554,6 +559,21 @@ class Admin extends \App\Controllers\BaseController
 
         $pricelistModel->update($price_list_id,$data);
        return redirect()->to(site_url('/hospital/admin/pricesetup?plid='.$price_list_id ));
+    }
+     public function resetpin()
+    {
+        $userModel = model('System/UserModel');
+        $user_id = $_POST['user_id'] ?? 0;
+
+        if (empty($user_id) || empty($userModel->find($user_id))) {
+            return $this->response->setJSON([
+                'status' => 'error',
+                'message' => 'User not found'
+            ]);
+        }
+
+        $userModel->update($user_id, ['pin_code' => md5('0000')]);
+        return BluelimeSystem::get_success_ajax_return('ok');
     }
     public function resetpassword()
     {

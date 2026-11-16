@@ -3,16 +3,16 @@ $users = $this->data['users'];
 $user = $this->data['edituser'];
  //BluelimeSystem::show_and_die($user);
 ?>
-<div class="content-wrapper">
+<div class="content-wrapper user-management-page">
 
 <!-- Content Header (Page header) -->
     <section class="content-header">
         <div class="header-icon">
-            <i class="pe-7s-world"></i>
+            <i class="fa fa-users"></i>
         </div>
         <div class="header-title">
-            <h1>Administrator</h1>
-                <small>New User</small>
+            <h1>User Management</h1>
+                <small>Create accounts, assign access, and manage active users</small>
             <ol class="breadcrumb">
                 <li class="active"><a href="/hospital/admin/">Dashboard</a></li>
             </ol>
@@ -22,11 +22,12 @@ $user = $this->data['edituser'];
 <!-- Main content -->
     <section class="content">
         <div class="row">
-            <div class="col-sm-5 col-md-5">
+            <div class="col-sm-4 col-md-4">
                 <div  class="panel panel-bd panel-form">
                 <div class="panel-heading">
                     <div class="panel-title" >
-                        <h4>Add New User</h4>
+                        <h4><?=@$_GET['edit']==1 ? 'Edit User' : 'Create User'?></h4>
+                        <p>Set identity details and permissions for this account.</p>
                     </div>
                 </div>
 
@@ -42,8 +43,8 @@ $user = $this->data['edituser'];
                         
                             <div class="form-body">
                                 <div class="form-group">
-                                    <label class="col-md-4 control-label" style="text-align: left;"> Full Name:</label>
-                                    <div class="col-md-11">
+                                    <label class="control-label" for="full_name">Full name</label>
+                                    <div>
                                         <input type="text" name="full_name" class="form-control" required value="<?=@$user[0]['name']?>" placeholder="Full Name"> 
                                         <input type="hidden" name="id" value="<?=@$user[0]['id']?>"> 
                                         <input type="hidden" name="edit" value="<?=@$_GET['edit']?>"> 
@@ -52,24 +53,24 @@ $user = $this->data['edituser'];
                                 </div>
 
                                 <div class="form-group">
-                                    <label class="col-md-4 control-label" style="text-align: left;"> Username:</label>
-                                    <div class="col-md-11">
+                                    <label class="control-label" for="username">Username</label>
+                                    <div>
                                         <input type="text" name="username" id="username" class="form-control" required value="<?=@$user[0]['username']?>" placeholder="Username"> 
                                         
                                     </div>
                                 </div>
 
                                 <div class="form-group" <?=@$_GET['edit']==1?"hidden":""?>>
-                                    <label class="col-md-4 control-label" style="text-align: left;"> Password:</label>
-                                    <div class="col-md-11">
+                                    <label class="control-label" for="password">Temporary password</label>
+                                    <div>
                                         <input type="password" name="password" required value="" class="form-control" > 
                                         
                                     </div>
                                 </div>
 
                                 <div class="form-group">
-                                    <label class="col-md-4 control-label" style="text-align: left;"> Email:</label>
-                                    <div class="col-md-11">
+                                    <label class="control-label" for="email">Email address</label>
+                                    <div>
                                         <input type="text" name="email" required value="<?=@$user[0]['email']?>" class="form-control" placeholder="Email"> 
                                         
                                     </div>
@@ -77,29 +78,37 @@ $user = $this->data['edituser'];
 
 
                                 <div class="form-group">
-                                    <label class="col-md-4 control-label" style="text-align: left;"> Mobile:</label>
-                                    <div class="col-md-11">
+                                    <label class="control-label" for="mobile">Mobile number</label>
+                                    <div>
                                         <input type="text"  name="mobile" value="<?=@$user[0]['mobile']?>" class="form-control" placeholder="Mobile"> 
                                         
                                     </div>
                                 </div>
 
-                                <div class="form-group">
-                                    <label class="col-md-4 control-label" style="text-align: left;">Role:</label>
-                                    <div class="col-md-12">
+                                <div class="form-group permission-section">
+                                    <span class="section-label">Module access</span>
+                                    <span class="section-help">Select every module this user is allowed to access.</span>
+                                    <div>
                                         <?php
                                             $role_reflection = new ReflectionClass(BluelimeConfiguration::USER_ROLE);
                                             $roles = $role_reflection->getConstants();
                                             $user_role = $edituser[0]['role'] ?? '';
+                                            $user_roles = $edituser[0]['extra']['roles'] ?? [$user_role];
+                                            $user_roles = is_array($user_roles) ? $user_roles : [$user_role];
+                                            $user_extra_roles = $edituser[0]['extra']['extra_role'] ?? [];
+                                            $user_extra_roles = is_array($user_extra_roles) ? $user_extra_roles : [];
+                                            if ($user_role !== '' && !in_array($user_role, $user_roles, true)) {
+                                                array_unshift($user_roles, $user_role);
+                                            }
                                             foreach($roles as $role){
                                                 echo '
-                                                <div class="form-check form-check-inline" style="display: inline-block; margin: 8px; padding: 5px;">
-                                                    <input class="form-check-input" type="radio"  name="role" value="'.$role.'" id="role_'.$role.'" onclick="role_is_choosed(this)"';
-                                                if($user_role == $role)
+                                                <div class="role-option">
+                                                    <input class="form-check-input" type="checkbox" name="roles[]" value="'.$role.'" id="role_'.$role.'" onclick="role_is_choosed()"';
+                                                if(in_array($role, $user_roles, true))
                                                     echo ' checked ';
-                                                echo ' required>
+                                                echo '>
                                                     <label class="form-check-label" for="role_'.$role.'">
-                                                        '. ucfirst(strtolower($role)).'
+                                                        '. ucfirst(strtolower(str_replace('_', ' ', $role))).'
                                                     </label>
                                                 </div>
                                                 ';
@@ -107,10 +116,10 @@ $user = $this->data['edituser'];
                                         ?>
                                     </div>
                                 </div>
-                                <div id="default_store_div" <?= (in_array($user_role, $default_store_roles)) ? '' : 'hidden'?> >
+                                <div id="default_store_div" <?= (count(array_intersect($user_roles, $default_store_roles)) > 0) ? '' : 'hidden'?> >
                                     <div class="form-group">
-                                        <label class="col-md-12 control-label" style="text-align: left;">Default Store:</label>
-                                        <div class="col-md-12">
+                                        <label class="control-label" for="default_store">Default store</label>
+                                        <div>
                                             <select id="default_store" class="form-control" name="default_store">
                                                 <option value=""></option>
                                                 <?php
@@ -126,16 +135,20 @@ $user = $this->data['edituser'];
                                         </div>
                                     </div>
                                 </div>
-                                <div class="form-group">
-                                    <label class="col-md-4 control-label" style="text-align: left;">Extra Role:</label>
-                                    <div class="col-md-12">
+                                <div class="form-group permission-section">
+                                    <span class="section-label">Additional permissions</span>
+                                    <span class="section-help">Optional privileges that extend the selected module access.</span>
+                                    <div>
                                         <?php
                                             $user_role_extra_reflection = new ReflectionClass(BluelimeConfiguration::USER_ROLE_EXTRA);
                                             $user_role_extras = $user_role_extra_reflection->getConstants();
                                             foreach($user_role_extras as $role_extra){
                                                 echo '
-                                                <div class="form-check form-check-inline" style="display: inline-block; margin: 8px; padding: 5px;">
-                                                    <input class="form-check-input" type="checkbox"  name="extra_role[]" value="'.$role_extra.'" id="extra_role_'.$role_extra.'">
+                                                <div class="role-option">
+                                                    <input class="form-check-input" type="checkbox"  name="extra_role[]" value="'.$role_extra.'" id="extra_role_'.$role_extra.'"';
+                                                if(in_array($role_extra, $user_extra_roles, true))
+                                                    echo ' checked ';
+                                                echo '>
                                                     <label class="form-check-label" for="extra_role_'.$role_extra.'">
                                                         '.ucfirst(strtolower(str_ireplace('_',' ',$role_extra))).'
                                                     </label>
@@ -146,20 +159,18 @@ $user = $this->data['edituser'];
                                     </div>
                                 </div>
 
-                                <div class="form-group">
-                                    <label class="col-md-4 control-label" style="text-align: left;">Digital Signature:</label>
-                                    <div class="col-md-11">
+                                <div class="form-group permission-section">
+                                    <label class="control-label" for="digital_signature">Digital signature</label>
+                                    <div class="signature-field">
                                         <input type="file" name="digital_signature" value="">       
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="form-group row" >
-                                <div class="col-sm-offset-3 col-sm-9" style="text-align: right;">
+                            <div class="form-actions">
                                     <!--button type="reset" class="btn btn-danger">Reset</button-->
-                                    <button type="button" onclick="return <?=@$_GET['edit']==1?"submituserform()":"checkusername()"?>" class="btn btn-success">Submit</button>
+                                    <button type="button" onclick="return <?=@$_GET['edit']==1?"submituserform()":"checkusername()"?>" class="btn btn-save"><i class="fa fa-check"></i> Save user</button>
                                 </div>
-                            </div>
                         <?php echo form_close();?>
                             </div>
                         </div>
@@ -167,48 +178,81 @@ $user = $this->data['edituser'];
                 </div>
             </div>
             </div>
-                        <style>
-                            .user_row{
-                                height: 52px;
-                            }
-                            .user_row:hover .print{
-                                display: inline-block;
-                            }
-                            .print{
-                                display: none;
-                            }
-                            .error_input{
-                                background-color: red;
-                            }
-                        </style>
 
-            <div class="col-sm-7 col-md-7">
+            <div class="col-sm-8 col-md-8">
                 <div  class="panel panel-bd panel-form">
                 <div class="panel-heading">
                     <div class="panel-title" >
-                        <h4>User List</h4>
+                        <h4>Users</h4>
+                        <p id="user_count_text"><?=count($users)?> account<?=count($users) == 1 ? '' : 's'?> registered</p>
                     </div>
                 </div>
-                <div class="panel-body  table-responsive">
-                    <table class="table table-striped" style="font-size: smaller;">
-                        <tr style="font-weight: bold;">
-                            <td>Full Name</td>
-                            <td>Username</td>
-                            <td>Role</td>
-                            <td>Mobile</td>
-                            <td width="150"></td>
-                        </tr>
+                <div class="panel-body table-responsive">
+                    <div class="user-filter-bar">
+                        <input type="text" id="user_filter_search" class="form-control" placeholder="Search name, username or mobile" autocomplete="off">
+                        <select id="user_filter_role" class="form-control">
+                            <option value="">All roles</option>
+                            <?php
+                                $filter_role_reflection = new ReflectionClass(BluelimeConfiguration::USER_ROLE);
+                                foreach($filter_role_reflection->getConstants() as $filter_role):
+                            ?>
+                                <option value="<?=htmlspecialchars($filter_role, ENT_QUOTES, 'UTF-8')?>"><?=ucfirst(strtolower(str_replace('_', ' ', $filter_role)))?></option>
+                            <?php endforeach; ?>
+                        </select>
+                        <select id="user_filter_status" class="form-control">
+                            <option value="">All statuses</option>
+                            <option value="active">Active</option>
+                            <option value="inactive">Inactive</option>
+                        </select>
+                        <button type="button" id="user_filter_clear" class="btn btn-default">Clear</button>
+                    </div>
+                    <table class="table user-table">
+                        <thead>
+                            <tr>
+                                <th>Full name</th>
+                                <th>Username</th>
+                                <th>Access</th>
+                                <th>Signature</th>
+                                <th>Mobile</th>
+                                <th class="text-right">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
                         <?php 
                             foreach($users as $user):
+                                $signature = $user['digital_signature'] ?? '';
+                                $filter_user_roles = $user['extra']['roles'] ?? [$user['role']];
+                                $filter_user_roles = is_array($filter_user_roles) ? $filter_user_roles : [$user['role']];
+                                $signature_mime = '';
+                                if (!empty($signature)) {
+                                    $signature_mime = (new \finfo(FILEINFO_MIME_TYPE))->buffer($signature) ?: '';
+                                    if (strpos($signature_mime, 'image/') !== 0) {
+                                        $signature_mime = '';
+                                    }
+                                }
                         ?>
-                        <tr class="user_row" style="<?=$user['active'] == 0?'text-decoration: line-through red 2px;':''?>">
+                        <tr class="user_row <?=$user['active'] == 0 ? 'inactive' : ''?>"
+                            data-search="<?=htmlspecialchars(strtolower(($user['name'] ?? '').' '.($user['username'] ?? '').' '.($user['mobile'] ?? '')), ENT_QUOTES, 'UTF-8')?>"
+                            data-roles="|<?=htmlspecialchars(implode('|', $filter_user_roles), ENT_QUOTES, 'UTF-8')?>|"
+                            data-status="<?=$user['active'] == 0 ? 'inactive' : 'active'?>">
                             
-                            <td><?=$user['name']?></td>
+                            <td><span class="user-name"><?=$user['name']?></span></td>
                             <td><?=$user['username']?></td>
-                            <td><?=$user['role']?></td>
+                            <td>
+                                <?php foreach(($user['extra']['roles'] ?? [$user['role']]) as $assigned_role): ?>
+                                    <span class="role-badge"><?=ucfirst(strtolower(str_replace('_', ' ', $assigned_role)))?></span>
+                                <?php endforeach; ?>
+                            </td>
+                            <td>
+                                <?php if ($signature_mime !== ''): ?>
+                                    <img class="signature-thumb" src="data:<?=$signature_mime?>;base64,<?=base64_encode($signature)?>" data-toggle="modal" data-target="#signature_preview" data-signature="<?=htmlspecialchars('data:' . $signature_mime . ';base64,' . base64_encode($signature), ENT_QUOTES, 'UTF-8')?>" title="View signature" alt="User signature">
+                                <?php else: ?>
+                                    <span class="signature-missing">Not added</span>
+                                <?php endif; ?>
+                            </td>
                             <td><?=$user['mobile']?></td>
                             
-                            <td>
+                            <td class="table-actions">
                             <label class="print switch"  title="<?=$user['active'] == 0?"Activate":"Deactivate"?>" data-toggle="tooltip" data-html="true">
                                     <?php 
                                     $user_status = "checked";
@@ -224,37 +268,33 @@ $user = $this->data['edituser'];
                                 <a href="admin?uid=<?=$user['id']?>&edit=<?=1?>">
                                     <button type="button" class="print fa fa-edit btn-primary btn-sm" aria-hidden="true"  title="Edit User" data-toggle="tooltip" data-html="true"></button>
                                 </a>
-                            <a onclick="show_reset_password_modal(<?=$user['id']?>,'<?=$user['name']?>')"><img style="cursor: pointer;" class="print" src="/img/reset_password.png" width="30px"  title="Reset Password" data-toggle="tooltip" data-html="true"></a>
+                            <button type="button" class="print reset-credentials-button" onclick="show_reset_modal(this)" data-user-id="<?=intval($user['id'])?>" data-user-name="<?=htmlspecialchars($user['name'], ENT_QUOTES, 'UTF-8')?>" title="Reset Password or PIN" data-toggle="tooltip" data-html="true"><i class="fa fa-refresh"></i></button>
                             </td>
-                        </tr>
+                                </tr>
                         <?php 
                            endforeach;
                         ?>
+                        <tr id="user_filter_empty" class="hidden">
+                            <td colspan="6" class="text-center text-muted">No users match the selected filters.</td>
+                        </tr>
+                                </tbody>
                     </table>
                 </div>
 
-                <div class="panel-body">
-                    <div class="portlet-body form">
-                        <div class="row">    
-                            <div class="col-sm-12">
-
-                            </div>
-                        </div>
-                    </div>
                 </div>
-                </div>
-            </div>
+            </div></div>
 
         <div class="row">
             <div class="col-md-12">
-                <div class="panel panel-bd">
+                <div class="panel panel-bd user-log-panel">
                     <div class="panel-heading">
                         <div class="panel-title" >
-                            <h4>User Log</h4>
+                            <h4>Recent sign-ins</h4>
+                            <p>Latest account activity and access history.</p>
                         </div>
                     </div>
                     <div class="panel-body  table-responsive">
-                        <table width="100%" class="table table-striped table-bordered table-hover" style="font-size: smaller;">
+                        <table width="100%" class="table table-striped table-bordered table-hover user-log-table">
                             <thead>
                                 <tr>
                                 <th>User</th>
@@ -292,24 +332,50 @@ $user = $this->data['edituser'];
 
 </div>
 
-<div class="modal fade" id="reset_password" role="dialog">
-            <div class="modal-dialog modal-sm">
-                <div class="modal-content">
-                    
-                    <div class="modal-footer" text-align="center">
-                        <input type="hidden" id="user_reset_id">
-                        <p style="text-align: center;"><h5 class="modal-title">Password for <label id="user_reset_name"></label> will be set to <b style="color:red">0000</b></h5></p>
-                        <button type="button" class="btn btn-danger" data-dismiss="modal" onclick="resetpassword()">Reset</button>
-                    </div>
-                </div>
+<div class="modal fade reset-credentials-modal" id="reset_credentials" role="dialog" aria-labelledby="reset_credentials_title">
+    <div class="modal-dialog modal-sm reset-credentials-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close reset-modal-close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <div class="reset-modal-icon"><i class="fa fa-refresh"></i></div>
+                <h4 class="modal-title" id="reset_credentials_title">Reset credentials</h4>
+                <p class="reset-modal-subtitle">Choose which access credential to reset.</p>
             </div>
+            <div class="modal-body reset-credentials-message">
+                <div class="reset-user-summary">
+                    <span class="reset-user-label">Account</span>
+                    <strong id="user_reset_name"></strong>
+                </div>
+                <p>Selected credential will be changed to</p>
+                <strong class="reset-password-value">0000</strong>
+            </div>
+            <div class="modal-footer">
+                <input type="hidden" id="user_reset_id">
+                <button type="button" class="btn reset-password-action" data-dismiss="modal" onclick="resetpassword()"><i class="fa fa-lock"></i> Reset password</button>
+                <button type="button" class="btn reset-pin-action" data-dismiss="modal" onclick="resetpin()"><i class="fa fa-key"></i> Reset PIN</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade signature-preview-modal" id="signature_preview" role="dialog" aria-labelledby="signature_preview_title">
+    <div class="modal-dialog modal-sm signature-preview-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="signature_preview_title">Digital signature</h4>
+            </div>
+            <div class="modal-body signature-preview-body">
+                <img id="signature_preview_image" src="" alt="Digital signature" class="signature-preview-image">
+            </div>
+        </div>
+    </div>
 </div>
 <script>
     var default_store_roles = <?= BluelimeSystem::convert_array_to_string($default_store_roles) ?>;
     function role_is_choosed(selected_role){
         let default_store_div = $('#default_store_div');
-        let role = selected_role.value;
-        if(default_store_roles.includes(role))
+        let roles = Array.from(document.querySelectorAll('input[name="roles[]"]:checked')).map(input => input.value);
+        if(roles.some(role => default_store_roles.includes(role)))
             default_store_div.show();
         else
             default_store_div.hide();
@@ -317,13 +383,18 @@ $user = $this->data['edituser'];
 
     function validate_user_form(){
         let form_user = document.getElementById('form_user');
-        let selected_role = form_user.elements['role'].value;
+        let selected_roles = Array.from(form_user.querySelectorAll('input[name="roles[]"]:checked')).map(input => input.value);
         let selected_default_store = $('#default_store').val();
 
-        if(default_store_roles.includes(selected_role)){
+        if(selected_roles.length === 0){
+            alert('Select at least one role');
+            return false;
+        }
+
+        if(selected_roles.some(role => default_store_roles.includes(role))){
             if(selected_default_store == ''){
                 alert('Default Store cannot be empty');
-                return true;
+                return false;
             }
         }
 
@@ -359,11 +430,48 @@ $user = $this->data['edituser'];
         $("#form_user").submit();
     }
 
-    function show_reset_password_modal(user_id,user_name){
-                    $("#reset_password").modal();
-                    $("#user_reset_id").val(user_id);
-                    $("#user_reset_name").html(user_name);
-                }
+    function show_reset_modal(button){
+        $("#user_reset_id").val(button.getAttribute('data-user-id'));
+        $("#user_reset_name").text(button.getAttribute('data-user-name') || 'this account');
+        $("#reset_credentials").modal();
+    }
+
+    $('#signature_preview').on('show.bs.modal', function(event) {
+        let signature = $(event.relatedTarget).data('signature');
+        $('#signature_preview_image').attr('src', signature || '');
+    });
+
+    function applyUserFilters(){
+        let search = $('#user_filter_search').val().trim().toLowerCase();
+        let role = $('#user_filter_role').val();
+        let status = $('#user_filter_status').val();
+        let rows = $('.user-table tbody tr.user_row');
+        let visible = 0;
+
+        rows.each(function(){
+            let row = $(this);
+            let matchesSearch = search === '' || String(row.data('search')).indexOf(search) !== -1;
+            let matchesRole = role === '' || String(row.attr('data-roles')).indexOf('|' + role + '|') !== -1;
+            let matchesStatus = status === '' || row.data('status') === status;
+            let show = matchesSearch && matchesRole && matchesStatus;
+            row.toggle(show);
+            if(show) visible++;
+        });
+
+        $('#user_filter_empty').toggleClass('hidden', visible > 0 || rows.length === 0);
+        $('#user_count_text').text(visible === rows.length
+            ? rows.length + (rows.length === 1 ? ' account registered' : ' accounts registered')
+            : 'Showing ' + visible + ' of ' + rows.length + ' accounts');
+    }
+
+    $('#user_filter_search').on('input', applyUserFilters);
+    $('#user_filter_role, #user_filter_status').on('change', applyUserFilters);
+    $('#user_filter_clear').on('click', function(){
+        $('#user_filter_search').val('');
+        $('#user_filter_role').val('');
+        $('#user_filter_status').val('');
+        applyUserFilters();
+    });
     
     function resetpassword(){
         let user_reset_id = $('#user_reset_id').val();
@@ -387,6 +495,27 @@ $user = $this->data['edituser'];
             alert(error);
         }
             
+        });
+    }
+
+    function resetpin(){
+        let user_reset_id = $('#user_reset_id').val();
+        $.ajax({
+            method: 'POST',
+            url: "<?=base_url()?>hospital/admin/resetpin",
+            data: {user_id: user_reset_id},
+            dataType: 'json',
+            success: function(result) {
+                if(result.status == "success"){
+                    toastr['success']('User PIN has been reset to 0000');
+                }
+                else{
+                    toastr['error'](result.message || 'Unable to reset PIN');
+                }
+            },
+            error: function(jqXHR, status, error) {
+                toastr['error'](error || 'Unable to reset PIN');
+            }
         });
     }
 

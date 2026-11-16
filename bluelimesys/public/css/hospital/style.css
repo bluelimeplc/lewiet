@@ -127,6 +127,166 @@
     color: #000;
 } 
 
+/* User management */
+.user-management-page {
+    --um-ink: #183642;
+    --um-muted: #71828a;
+    --um-line: #e4ecee;
+    --um-soft: #f5f8f9;
+    --um-accent: #167d8d;
+    --um-accent-soft: #e5f4f5;
+}
+.user-management-page .content-header { padding-bottom: 20px; }
+.user-management-page .header-icon {
+    background: var(--um-accentt); border-radius: 12px; color: #fff;
+    height: 48px; line-height: 48px; text-align: center; width: 48px;
+}
+.user-management-page .header-title h1 {
+    color: var(--um-ink); font-size: 27px; font-weight: 700; margin: 0 0 4px;
+}
+.user-management-page .header-title small { color: var(--um-muted); font-size: 13px; }
+.user-management-page .breadcrumb { margin-top: 8px; }
+.user-management-page .panel-bd,
+.user-management-page .user-log-panel {
+    border: 1px solid var(--um-line); border-radius: 10px;
+    box-shadow: 0 5px 18px rgba(24, 54, 66, .06); overflow: hidden;
+}
+.user-management-page .panel-heading {
+    background: #fff; border-bottom: 1px solid var(--um-line); padding: 18px 22px;
+}
+.user-management-page .panel-title h4 {
+    color: var(--um-ink); font-size: 17px; font-weight: 700; margin: 0;
+}
+.user-management-page .panel-title p { color: var(--um-muted); font-size: 12px; margin: 5px 0 0; }
+.user-management-page .panel-body { padding: 22px; }
+.user-management-page .form-group { margin-bottom: 18px; }
+.user-management-page .control-label {
+    color: var(--um-ink); font-size: 12px; font-weight: 700;
+    letter-spacing: .02em; margin-bottom: 7px;
+}
+.user-management-page .form-control {
+    border: 1px solid #d8e3e6; border-radius: 6px; box-shadow: none;
+    color: var(--um-ink); height: 40px;
+}
+.user-management-page .form-control:focus {
+    border-color: var(--um-accent); box-shadow: 0 0 0 3px rgba(22, 125, 141, .12);
+}
+.user-management-page .permission-section { border-top: 1px solid var(--um-line); margin-top: 22px; padding-top: 19px; }
+.user-management-page .section-label { color: var(--um-ink); display: block; font-size: 13px; font-weight: 700; margin-bottom: 4px; }
+.user-management-page .section-help { color: var(--um-muted); display: block; font-size: 11px; margin-bottom: 12px; }
+.user-management-page .role-option { display: inline-block; margin: 0 6px 8px 0; }
+.user-management-page .role-option input { opacity: 0; position: absolute; }
+.user-management-page .role-option label {
+    background: var(--um-soft); border: 1px solid var(--um-line); border-radius: 5px;
+    color: #49616a; cursor: pointer; font-size: 11px; font-weight: 600;
+    padding: 8px 11px; transition: background .15s ease, border-color .15s ease, color .15s ease;
+}
+.user-management-page .role-option input:checked + label { background: var(--um-accent-soft); border-color: var(--um-accent); color: #126b79; }
+.user-management-page .role-option input:focus + label { box-shadow: 0 0 0 3px rgba(22, 125, 141, .12); }
+.user-management-page .signature-field { background: var(--um-soft); border: 1px dashed #cbdadd; border-radius: 6px; padding: 10px; }
+.user-management-page .form-actions { border-top: 1px solid var(--um-line); margin-top: 8px; padding-top: 18px; text-align: right; }
+.user-management-page .btn-save { background: var(--um-accent); border: 0; border-radius: 5px; color: #fff; font-weight: 600; padding: 10px 20px; }
+.user-management-page .btn-save:hover, .user-management-page .btn-save:focus { background: #116875; color: #fff; }
+.user-management-page .user-table { margin: 0; }
+.user-management-page .user-filter-bar { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 16px; }
+.user-management-page .user-filter-bar .form-control { flex: 1 1 180px; width: auto; }
+.user-management-page .user-filter-bar #user_filter_search { flex: 2 1 240px; }
+.user-management-page .user-filter-bar .btn-default { flex: 0 0 auto; }
+.user-management-page .user-table thead th { background: var(--um-soft); border-bottom: 1px solid var(--um-line); color: var(--um-muted); font-size: 10px; font-weight: 700; letter-spacing: .06em; padding: 12px 10px; text-transform: uppercase; white-space: nowrap; }
+.user-management-page .user-table tbody td { border-top: 1px solid #edf2f3; color: #38515a; font-size: 12px; padding: 13px 10px; vertical-align: middle; }
+.user-management-page .user-table tbody tr:hover td { background: #fbfdfd; }
+.user-management-page .user-name { color: var(--um-ink); font-weight: 700; }
+.user-management-page .status-label { color: #4e6a72; font-size: 11px; white-space: nowrap; }
+.user-management-page .status-label::before { background: #32a36a; border-radius: 50%; content: ''; display: inline-block; height: 7px; margin-right: 5px; width: 7px; }
+.user-management-page .status-label.inactive::before { background: #b7c3c6; }
+.user-management-page .role-badge { background: var(--um-accent-soft); border-radius: 4px; color: #126b79; display: inline-block; font-size: 10px; font-weight: 700; margin: 2px 2px 2px 0; padding: 4px 7px; }
+.user-management-page .signature-thumb {
+    background: #fff; border: 1px solid var(--um-line); border-radius: 4px; cursor: pointer;
+    display: inline-block; height: 34px !important; max-height: 34px !important;
+    max-width: 58px !important; object-fit: contain; padding: 3px; width: 58px !important;
+}
+.user-management-page .signature-missing { color: var(--um-muted); font-size: 11px; }
+.user-management-page .table-actions { min-width: 112px; text-align: right; white-space: nowrap; }
+.user-management-page .table-actions .print { display: inline-block; margin-left: 5px; }
+.user-management-page .reset-credentials-button {
+    background: #eef5f6; border: 1px solid #d7e6e8; border-radius: 4px;
+    color: #167d8d; cursor: pointer; height: 30px; margin-left: 5px; width: 30px;
+}
+.user-management-page .reset-credentials-button:hover { background: #dceff1; }
+.reset-credentials-message { color: #4e6a72; text-align: center; }
+.reset-credentials-dialog { max-width: calc(100vw - 20px); width: 390px; }
+.reset-credentials-modal .modal-content { border: 0; border-radius: 10px; overflow: hidden; }
+.reset-credentials-modal .modal-header { background: #f4f8f9; border-bottom: 1px solid #e0eaec; padding: 24px 24px 20px; position: relative; text-align: center; }
+.reset-modal-close { color: #71828a; font-size: 24px; opacity: .8; position: absolute; right: 16px; top: 12px; }
+.reset-modal-icon { align-items: center; background: #e6f3f4; border-radius: 50%; color: #167d8d; display: flex; font-size: 18px; height: 44px; justify-content: center; margin: 0 auto 12px; width: 44px; }
+.reset-credentials-modal .modal-title { color: #183642; font-size: 18px; font-weight: 700; }
+.reset-modal-subtitle { color: #71828a; font-size: 12px; margin: 5px 0 0; }
+.reset-credentials-message { padding: 24px; }
+.reset-user-summary { background: #f7fafb; border: 1px solid #e4ecee; border-radius: 6px; margin-bottom: 22px; padding: 11px 14px; text-align: left; }
+.reset-user-label { color: #71828a; display: block; font-size: 10px; letter-spacing: .06em; margin-bottom: 3px; text-transform: uppercase; }
+.reset-user-summary strong { color: #183642; font-size: 14px; }
+.reset-credentials-message p { color: #71828a; font-size: 12px; margin: 0 0 6px; }
+.reset-password-value { color: #c24732; font-size: 22px; letter-spacing: .08em; }
+.reset-credentials-modal .modal-footer { background: #fff; border-top: 1px solid #e4ecee; padding: 14px 18px; text-align: right; }
+.reset-credentials-modal .modal-footer .btn { border-radius: 5px; font-size: 12px; font-weight: 600; margin-left: 5px; padding: 9px 12px; }
+.reset-modal-cancel { background: #fff; border: 1px solid #d8e3e6; color: #71828a; }
+.reset-password-action { background: #c24732; border: 1px solid #c24732; color: #fff; }
+.reset-password-action:hover { background: #a93b2a; color: #fff; }
+.reset-pin-action { background: #d28a24; border: 1px solid #d28a24; color: #fff; }
+.reset-pin-action:hover { background: #b8751b; color: #fff; }
+.user-management-page .user-log-panel { margin-top: 22px; }
+.user-management-page .user-log-table { font-size: smaller; margin-bottom: 0; }
+.signature-preview-body { text-align: center; }
+.signature-preview-dialog { max-width: calc(100vw - 20px); width: 320px; }
+.signature-preview-modal .modal-content { max-width: 100%; overflow: hidden; }
+.signature-preview-image {
+    display: block; height: auto !important; max-height: 120px !important;
+    max-width: 100% !important; object-fit: contain; width: auto !important;
+    margin: 0 auto;
+}
+@media (max-width: 767px) {
+    .user-management-page { overflow-x: hidden; }
+    .user-management-page .content-header {
+        align-items: flex-start; display: flex; padding: 15px 15px 18px;
+    }
+    .user-management-page .header-icon {
+        flex: 0 0 40px; height: 40px; line-height: 40px; width: 40px;
+    }
+    .user-management-page .header-title { min-width: 0; padding-left: 12px; }
+    .user-management-page .header-title h1 { font-size: 22px; line-height: 1.2; }
+    .user-management-page .header-title small { display: block; line-height: 1.4; }
+    .user-management-page .breadcrumb { margin-bottom: 0; padding: 6px 0 0; }
+    .user-management-page .content { padding: 0 10px 15px; }
+    .user-management-page .content > .row { margin-left: -5px; margin-right: -5px; }
+    .user-management-page .content > .row > [class*="col-"] {
+        padding-left: 5px; padding-right: 5px; width: 100%;
+    }
+    .user-management-page .panel-bd { margin-bottom: 12px; }
+    .user-management-page .panel-heading { padding: 15px 16px; }
+    .user-management-page .panel-body { padding: 16px; }
+    .user-management-page .form-horizontal .control-label {
+        float: none; padding-top: 0; text-align: left; width: auto;
+    }
+    .user-management-page .form-group { margin-left: 0; margin-right: 0; }
+    .user-management-page .role-option { margin-right: 4px; }
+    .user-management-page .role-option label { display: inline-block; padding: 8px 9px; }
+    .user-management-page .signature-field input[type="file"] { max-width: 100%; }
+    .user-management-page .form-actions { text-align: left; }
+    .user-management-page .btn-save { width: 100%; }
+    .user-management-page .table-responsive {
+        border: 0; margin-bottom: 0; overflow-x: auto; -webkit-overflow-scrolling: touch;
+    }
+    .user-management-page .user-table { min-width: 680px; }
+    .user-management-page .user-table thead th { padding: 10px 8px; }
+    .user-management-page .user-table tbody td { padding: 11px 8px; }
+    .user-management-page .user-log-table { min-width: 600px; }
+    .user-management-page .modal-dialog { margin: 10px; width: auto; }
+    .reset-credentials-dialog { margin: 10px; width: auto; }
+    .reset-credentials-modal .modal-footer { text-align: center; }
+    .reset-credentials-modal .modal-footer .btn { margin: 3px 0 0 3px; }
+}
+
+
 #dentalAlertTitleIcon {
     float: left;
 }

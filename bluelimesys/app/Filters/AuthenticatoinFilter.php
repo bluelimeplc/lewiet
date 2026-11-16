@@ -19,26 +19,31 @@ class AuthenticatoinFilter implements FilterInterface
             if($user['login_id'] != ($loggeduserdata['login_id']??' _'))
                 return redirect()->to(site_url('/login'));
 
-            $user_role = $loggeduserdata['role'];
-            $allowed_roles = [];
-            if(is_array($arguments))
-                $allowed_roles = $arguments;
-            if(!$this->is_logged_user_role_permitted($user_role, $allowed_roles))
+            $user_roles = $loggeduserdata['roles'] ?? [$loggeduserdata['role'] ?? ''];
+            $user_roles = is_array($user_roles) ? $user_roles : [$user_roles];
+            $allowed_roles = is_array($arguments)
+                ? $arguments
+                : (empty($arguments) ? [] : explode(',', (string) $arguments));
+            if(!$this->are_logged_user_roles_permitted($user_roles, $allowed_roles))
                 return redirect()->to(site_url('/?permission=0'));
         }
         else
             return redirect()->to(site_url('/login'));
     }
 
-    private function is_logged_user_role_permitted(string $user_role, array $allowed_roles)
+    private function are_logged_user_roles_permitted(array $user_roles, array $allowed_roles)
     {
-        if($user_role === 'SUPER_ADMIN')
-            return true;
-
-        foreach($allowed_roles as $allowed_role)
-        {
-            if(($allowed_role === $user_role) || ($allowed_role === 'ANY_USER'))
+        foreach($user_roles as $user_role) {
+            $user_role = strtoupper(trim((string) $user_role));
+            if($user_role === 'SUPER_ADMIN' || $user_role === 'ADMIN')
                 return true;
+
+            foreach($allowed_roles as $allowed_role)
+            {
+                $allowed_role = strtoupper(trim((string) $allowed_role));
+                if(($allowed_role === $user_role) || ($allowed_role === 'ANY_USER'))
+                    return true;
+            }
         }
         return false;
     }

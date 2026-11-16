@@ -53,8 +53,10 @@ class Login extends BaseController
         $loggeduserdata = \BluelimeSystem::$Authentication::get_logged_user_data();
 
         $role = $loggeduserdata['role'];
+        $roles = $loggeduserdata['roles'] ?? [$role];
 
-        $home_page_url = $role_home[$role] ?? '';
+        $home_page_url = count($roles) > 1 ? '/' : ($role_home[$role] ?? '');
+
 
         if ($home_page_url === '')
             return "User role '$role' is not recognized.";
@@ -93,7 +95,7 @@ class Login extends BaseController
             'pin_code' => $loggeduser['pin_code'],
             'digital_signature' => $loggeduser['digital_signature'],
             'active' => $loggeduser['active'],
-            'role' => $loggeduser['role'],
+            'role' => $loggeduser['role'],'roles' => $this->get_user_roles($loggeduser),
             'extra' => $loggeduser['extra'],
         ];
 
@@ -102,6 +104,19 @@ class Login extends BaseController
         $userModel->update($loggeduser['id'],['login_id' => $loggeduserdata['login_id']]);
 
         return true;
+    }
+    private function get_user_roles(array $user): array
+    {
+        $roles = $user['extra']['roles'] ?? [];
+        $roles = is_array($roles) ? $roles : [];
+        $primary_role = strtoupper(trim((string) ($user['role'] ?? '')));
+        $roles = array_values(array_unique(array_filter(array_map('strtoupper', $roles))));
+
+        if ($primary_role !== '' && !in_array($primary_role, $roles, true)) {
+            array_unshift($roles, $primary_role);
+        }
+
+        return $roles;
     }
     private function get_user_agent_info()
     {
