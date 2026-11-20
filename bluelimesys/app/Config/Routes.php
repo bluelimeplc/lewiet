@@ -256,6 +256,16 @@ $routes->group('adjustment', static function ($routes) {
         $routes->match(['GET', 'POST'], '(:segment)', 'Adjustment\Adjustment::$1', ['filter' => 'authenticatoinfilter:'.BluelimeConfiguration::USER_ROLE::DISPENSARY.','.BluelimeConfiguration::USER_ROLE::STORE]);
 });
 
+
+$routes->group('messages', static function ($routes) {
+    $routes->get('conversations', 'Messages::conversations', ['filter' => 'authenticatoinfilter:ANY_USER']);
+    $routes->get('stream', 'Messages::stream', ['filter' => 'authenticatoinfilter:ANY_USER']);
+    $routes->post('heartbeat', 'Messages::heartbeat', ['filter' => 'authenticatoinfilter:ANY_USER']);
+    $routes->get('thread/(:num)', 'Messages::thread/$1', ['filter' => 'authenticatoinfilter:ANY_USER']);
+    $routes->post('send', 'Messages::send', ['filter' => 'authenticatoinfilter:ANY_USER']);
+    $routes->get('attachment/(:num)', 'Messages::attachment/$1', ['filter' => 'authenticatoinfilter:ANY_USER']);
+});
+
 $routes->group('peachtreeidmap', static function ($routes) {
         $routes->match(['GET', 'POST'], '/', 'PeachtreeIdMap\PeachtreeIdMap::map_id', ['filter' => 'authenticatoinfilter:'.BluelimeConfiguration::USER_ROLE::FINANCE.','.BluelimeConfiguration::USER_ROLE::STORE.','.BluelimeConfiguration::USER_ROLE::DISPENSARY.','.BluelimeConfiguration::USER_ROLE::ADMIN]);
         $routes->match(['GET', 'POST'], '(:segment)', 'PeachtreeIdMap\PeachtreeIdMap::$1', ['filter' => 'authenticatoinfilter:'.BluelimeConfiguration::USER_ROLE::FINANCE.','.BluelimeConfiguration::USER_ROLE::STORE.','.BluelimeConfiguration::USER_ROLE::DISPENSARY.','.BluelimeConfiguration::USER_ROLE::ADMIN]);

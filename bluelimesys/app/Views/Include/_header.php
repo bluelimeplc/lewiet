@@ -4,6 +4,10 @@
         $loggeduserdata = ['role'=>'','name'=>''];
     
     $logged_role = $loggeduserdata['role'] ??'';
+    $unread_chat = ($logged_role !== '' && isset($loggeduserdata['id']))
+        ? model('System/ChatMessageModel')->total_unread((int) $loggeduserdata['id'])
+        : 0;
+    
     $header = BluelimeSystem::get_company_header();
     $location = explode('/', $_SERVER['REQUEST_URI'])[1];
     //BluelimeSystem::show_and_die($header);

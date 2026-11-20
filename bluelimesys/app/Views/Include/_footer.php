@@ -185,6 +185,7 @@
         <script src="<?php echo base_url()?>extra/sliptree-bootstrap-tokenfield/docs-assets/js/affix.js" type="text/javascript"></script>
         <!-- End Theme label Script
         =====================================================================-->
+        <?php if (!empty(\BluelimeSystem::$Authentication::get_logged_user_data())) echo view('Include/_chat_widget'); ?>
     </body>
 </html>
 <script>
